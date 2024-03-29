@@ -1,0 +1,7 @@
+[2024-03-29 13:30:20 +0300] [3560] [INFO] Starting gunicorn 20.1.0
+[2024-03-29 13:30:20 +0300] [3560] [INFO] Listening at: http://0.0.0.0:6000 (3560)
+[2024-03-29 13:30:20 +0300] [3560] [INFO] Using worker: sync
+[2024-03-29 13:30:20 +0300] [3561] [INFO] Booting worker with pid: 3561
+[2024-03-29 13:35:46 +0300] [3560] [INFO] Handling signal: int
+[2024-03-29 13:35:46 +0300] [3561] [INFO] Worker exiting (pid: 3561)
+[2024-03-29 13:35:46 +0300] [3560] [INFO] Shutting down: Master
