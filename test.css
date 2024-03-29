@@ -1,0 +1,15 @@
+.outer {
+  position: relative;
+  background-color: lightblue;
+  padding: 20px;
+  z-index: 1;
+}
+
+.inner {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: lightcoral;
+  padding: 10px;
+  z-index: 2;
+}

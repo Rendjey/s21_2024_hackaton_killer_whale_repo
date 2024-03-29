@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="">
+<header>
+    <meta charset="utf-8">
+    <title>Login form</title>
+    <link rel="stylesheet" href="styles3.css">
+</header>
+
+
+<div>
+    <div id="table_header"></div>
+<div class="wrapper"></div>
+</div>
+
+<script>
+    const week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    const table_header = document.getElementById('table_header');
+    for (let i = 0; i < 7; i++) {
+      const div = document.createElement('div');
+      div.textContent = week[i];
+      div.id = `Div${i+1}`;
+        div.classList.add('title');
+        table_header.appendChild(div);
+    }
+  </script>
+
+  <script>
+    const wrapper = document.querySelector('.wrapper');
+    for (let i = 0; i < 7 * 24; i++) {
+      const div = document.createElement('div');
+      div.textContent = `Div ${i+1}`;
+      div.id = `Div${i+1}`;
+        div.classList.add('cell');
+      wrapper.appendChild(div);
+    }
+  </script>
+
+  <!-- <script>
+    fetch('http://localhost:8080/')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log(data);
+  })
+  .catch(error => {
+    console.error('There was a problem with the fetch operation:', error);
+  });
+  </script>
+
+<script>
+const xhr = new XMLHttpRequest();
+xhr.open('GET', 'http://localhost:8080/');
+xhr.onreadystatechange = function() {
+  if (xhr.readyState === XMLHttpRequest.DONE) {
+    if (xhr.status === 200) {
+      const data = xhr.responseText;
+      alert(data);
+      console.log(data);
+    } else {
+      console.error('There was a problem with the request:', xhr.status);
+    }
+  }
+};
+xhr.send();
+  </script> -->
+
+  <script>
+    const hour = document.getElementById('Div63');
+    const occupation = document.createElement('div');
+    occupation.classList.add('occupation');
+    occupation.textContent = 'Occupied';
+    occupation.style.height = '200px';
+    hour.appendChild(occupation)
+  </script>
