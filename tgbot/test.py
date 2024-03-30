@@ -1,39 +1,56 @@
-# Importing required libraries 
-from aiogram import Bot, Dispatcher, executor, types 
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton 
+import random
+import asyncio
+import logging
+import config
+import backendConect
+from aiogram import F
+from aiogram import Bot, Dispatcher, types
+from aiogram.filters.command import Command
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-# Put the token that you received from BotFather in the quotes 
-bot = Bot(token='6396741710:AAG8bNPrWBBJWDfl8H7T76_i63IZnx7uYqw') 
+appConfig = config.Config("bot.config")
+backend = backendConect.backConect(appConfig.backendApi)
+# Включаем логирование, чтобы не пропустить важные сообщения
+logging.basicConfig(level=logging.INFO)
+# Объект бота
+bot = Bot(token=appConfig.TGtoken)
+# Диспетчер
+dp = Dispatcher()
 
-# Initializing the dispatcher object 
-dp = Dispatcher(bot) 
+@dp.message(Command("random"))
+async def cmd_random(message: types.Message):
+    builder = InlineKeyboardBuilder()
+    builder.add(types.InlineKeyboardButton(
+        text="Нажми меня",
+        callback_data="random_value")
+    )
+    await message.answer(
+        "Нажмите на кнопку, чтобы бот отправил число от 1 до 10",
+        reply_markup=builder.as_markup()
+    )
 
-# Defining and adding buttons 
-button1 = InlineKeyboardButton(text="button1", callback_data="In_First_button") 
-button2 = InlineKeyboardButton( 
-	text="button2", callback_data="In_Second_button") 
-keyboard_inline = InlineKeyboardMarkup().add(button1, button2) 
+@dp.callback_query(F.data == "random_value")
+async def send_random_value(callback: types.CallbackQuery):
+    builder = InlineKeyboardBuilder()
+    builder.add(types.InlineKeyboardButton(
+        text="Нажми меня",
+        callback_data="random_value")
+    )
+    await callback.message.edit_text(
+        str(random.randint(1, 10)),
+        reply_markup=builder.as_markup()
+    )
 
-# Message handler for the /button1 command 
+# Хэндлер на команду /start
+@dp.message(Command("start"))
+async def cmd_start(message: types.Message):
+    
 
+    await message.answer(")))")
 
-@dp.message_handler(commands=['start']) 
-async def check(message: types.Message): 
-	await message.reply("hi! how are you", reply_markup=keyboard_inline) 
+# Запуск процесса поллинга новых апдейтов
+async def main():
+    await dp.start_polling(bot)
 
-# Callback query handler for the inline keyboard buttons 
-
-
-@dp.callback_query_handler(text=["In_First_button", "In_Second_button"]) 
-async def check_button(call: types.CallbackQuery): 
-
-	# Checking which button is pressed and respond accordingly 
-	if call.data == "In_First_button": 
-		await call.message.answer("Hi! This is the first inline keyboard button.") 
-	if call.data == "In_Second_button": 
-		await call.message.answer("Hi! This is the second inline keyboard button.") 
-	# Notify the Telegram server that the callback query is answered successfully 
-	await call.answer() 
-
-# Start the bot 
-executor.start_polling(dp) 
+if __name__ == "__main__":
+    asyncio.run(main())
