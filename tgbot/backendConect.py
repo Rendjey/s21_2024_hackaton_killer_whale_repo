@@ -27,7 +27,7 @@ class backConect:
         url = self.backendApi+path
         try:
             response = requests.post(url, json=data)
-            # print(f'\033[32m{response.status_code}\033[0m')
+            print(f'\033[32m{response.status_code}\033[0m')
             if response.status_code != 200:
                 return 2, f'Сервер вернул {response.status_code}'
             return 0, response
@@ -58,22 +58,21 @@ class backConect:
             return 1, f'Ошибка: {responseData["description"]}'
     
     # !
-    def get_floor(self, floor):
-        error, response = self.sendJson('/room', {"floor": floor})
+    def get_floor(self, floor, uid):
+        error, response = self.sendJson('/rooms', {"uid": uid, "floor": floor})
 
         if error != 0 or response.status_code != 200:
             return error, response
 
         responseData = response.json()
         if responseData['status'] == 'ok':
-
-            return 0, "Регистрация успешна"
+            return 0, f"Этаж {floor}.\nВыберите день"
         else:
             return 1, f'Ошибка: {responseData["description"]}'
 
 
 if __name__ == '__main__':
-    backend = backConect('http://83.147.246.223:6000')
+    backend = backConect('http://83.147.246.223:8000')
 
     error, message = backend.ping()
     print(f'{error}: {message}') 
@@ -87,4 +86,7 @@ if __name__ == '__main__':
     print(f'{error}: {message}')
 
     error, message = backend.reg("456", 393635636)
+    print(f'{error}: {message}') 
+
+    error, message = backend.get_floor(17, 393635636)
     print(f'{error}: {message}') 
