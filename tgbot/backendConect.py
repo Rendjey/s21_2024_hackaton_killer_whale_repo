@@ -43,8 +43,8 @@ class backConect:
         if responseData['status'] == 'ok':
             username = responseData['username']
             return 0, f'Добро пожаловать {username}'
-        else:
-            return 1, f'Ошибка: {responseData["description"]}'
+        elif responseData['description'] == 'Пользователь не найден':
+            return 1, f'Добро пожаловать, пройдите регистрацию! /registration'
 
     def reg(self, username, uid):
         error, response = self.sendJson('/registration', {"username": username, "uid": uid})
