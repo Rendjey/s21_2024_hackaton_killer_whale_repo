@@ -1,9 +1,6 @@
 from os import path
 import json
 
-# {"TGtoken": "6611074263:AAEiT9jX3C7hnMc8toJ54Yc3DsY1qjsPfcA",
-#  "BackendApi": "http://83.147.246.223:6000"}
-
 class Config:
     def __init__(self, file):
         self.configFile = file

@@ -32,10 +32,6 @@ async def cmd_random(message: types.Message):
 @dp.callback_query(F.data == "random_value")
 async def send_random_value(callback: types.CallbackQuery):
     builder = InlineKeyboardBuilder()
-    builder.add(types.InlineKeyboardButton(
-        text="Нажми меня",
-        callback_data="random_value")
-    )
     await callback.message.edit_text(
         str(random.randint(1, 10)),
         reply_markup=builder.as_markup()
@@ -44,9 +40,44 @@ async def send_random_value(callback: types.CallbackQuery):
 # Хэндлер на команду /start
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
-    
+    builder = InlineKeyboardBuilder()
+    error, answer = backend.login(message.chat.id)
+    if error == 0:
+        builder.add(types.InlineKeyboardButton(
+            text="Бронировать переговорку",
+            callback_data="reservRoom")
+        )
+        builder.add(types.InlineKeyboardButton(
+            text="Отменить бронирование",
+            callback_data="cancelReserv")
+        )
+    await message.answer(answer, reply_markup=builder.as_markup())
 
-    await message.answer(")))")
+@dp.callback_query(F.data == "reservRoom")
+async def send_random_value(callback: types.CallbackQuery):
+    builder = InlineKeyboardBuilder()
+    await callback.message.edit_text(
+        str(random.randint(1, 10)),
+        reply_markup=builder.as_markup()
+    )
+
+@dp.callback_query(F.data == "cancelReserv")
+async def send_random_value(callback: types.CallbackQuery):
+    builder = InlineKeyboardBuilder()
+    await callback.message.edit_text(
+        str(random.randint(1, 10)),
+        reply_markup=builder.as_markup()
+    )
+
+@dp.message(F.text)
+async def textParser(message: types.Message):
+    error, answer = backend.login(message.chat.id)
+    if error == 1:
+        error, answer = backend.reg(message.text, message.chat.id)
+    else:
+        answer = "что?"
+
+    await message.answer(f"{answer}")
 
 # Запуск процесса поллинга новых апдейтов
 async def main():

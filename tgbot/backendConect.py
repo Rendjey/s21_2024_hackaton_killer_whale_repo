@@ -42,9 +42,9 @@ class backConect:
         responseData = response.json()
         if responseData['status'] == 'ok':
             username = responseData['username']
-            return 0, f'Добро пожаловать {username}'
+            return 0, f'Добро пожаловать {username}!\nВыберите свое дальнейшее дейсвие'
         elif responseData['description'] == 'Пользователь не найден':
-            return 1, f'Добро пожаловать, пройдите регистрацию! /registration'
+            return 1, f'Добро пожаловать, пройдите регистрацию! Введите свой ник на платформе'
 
     def reg(self, username, uid):
         error, response = self.sendJson('/registration', {"username": username, "uid": uid})
@@ -53,7 +53,7 @@ class backConect:
 
         responseData = response.json()
         if responseData['status'] == 'ok':
-            return 0, "Регистрация успешна"
+            return 0, "Регистрация успешна\nОтправте /start для выбора переговорки"
         else:
             return 1, f'Ошибка: {responseData["description"]}'
     
@@ -80,7 +80,7 @@ if __name__ == '__main__':
     
     # print(backend.sendJson('/registration', {"username": "user"}))
 
-    error, message = backend.reg(393635636)
+    error, message = backend.login(393635636)
     print(f'{error}: {message}') 
 
     error, message = backend.reg("345", 393635637)
