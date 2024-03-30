@@ -1,23 +1,39 @@
-import asyncio
-import logging
-from aiogram import Bot, Dispatcher, types
-from aiogram.filters.command import Command
+# Importing required libraries 
+from aiogram import Bot, Dispatcher, executor, types 
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton 
 
-# Включаем логирование, чтобы не пропустить важные сообщения
-logging.basicConfig(level=logging.INFO)
-# Объект бота
-bot = Bot(token="6611074263:AAEiT9jX3C7hnMc8toJ54Yc3DsY1qjsPfcA")
-# Диспетчер
-dp = Dispatcher()
+# Put the token that you received from BotFather in the quotes 
+bot = Bot(token='6396741710:AAG8bNPrWBBJWDfl8H7T76_i63IZnx7uYqw') 
 
-# Хэндлер на команду /start
-@dp.message(Command("start"))
-async def cmd_start(message: types.Message):
-    await message.answer("Hello!")
+# Initializing the dispatcher object 
+dp = Dispatcher(bot) 
 
-# Запуск процесса поллинга новых апдейтов
-async def main():
-    await dp.start_polling(bot)
+# Defining and adding buttons 
+button1 = InlineKeyboardButton(text="button1", callback_data="In_First_button") 
+button2 = InlineKeyboardButton( 
+	text="button2", callback_data="In_Second_button") 
+keyboard_inline = InlineKeyboardMarkup().add(button1, button2) 
 
-if __name__ == "__main__":
-    asyncio.run(main())
+# Message handler for the /button1 command 
+
+
+@dp.message_handler(commands=['start']) 
+async def check(message: types.Message): 
+	await message.reply("hi! how are you", reply_markup=keyboard_inline) 
+
+# Callback query handler for the inline keyboard buttons 
+
+
+@dp.callback_query_handler(text=["In_First_button", "In_Second_button"]) 
+async def check_button(call: types.CallbackQuery): 
+
+	# Checking which button is pressed and respond accordingly 
+	if call.data == "In_First_button": 
+		await call.message.answer("Hi! This is the first inline keyboard button.") 
+	if call.data == "In_Second_button": 
+		await call.message.answer("Hi! This is the second inline keyboard button.") 
+	# Notify the Telegram server that the callback query is answered successfully 
+	await call.answer() 
+
+# Start the bot 
+executor.start_polling(dp) 
