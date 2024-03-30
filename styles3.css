@@ -2,14 +2,15 @@
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(24, 1fr);
-    height: 700px;
+    height: 800px;
+    position: relative;
   }
 
   .cell {
-    border: 3px;
     border: 1px solid black;
     background-color: #6f42c1;
     position: relative;
+    height: 30px;
   }
 
   body {
@@ -34,18 +35,25 @@
     max-width: 1000px;
   }
 
-  .table_time {
+  .time_column {
     background-color: yellowgreen;
     text-align: center;
     padding-top: 5px;
+  }
+
+  .time_row {
+    border: 1px solid black;
+    background-color: yellowgreen;
+    text-align: center;
+    height: 30px;
   }
 
   #time_table_form {
     max-width: 400px;
   }
 
-#time_table_form label,
+/* #time_table_form label,
 #time_table_form input,
 #time_table_form button {
   margin: 10px;
-}
+} */

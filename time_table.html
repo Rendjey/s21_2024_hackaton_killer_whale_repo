@@ -9,9 +9,9 @@
 
 <div id="table_container">
     <div id="table_header"></div>
-<div class="wrapper"></div>
+<div id="wrapper" class="wrapper"></div>
 
-<form id="time_table_form" onsubmit="{{handleSubmit}}">
+<!-- <form id="time_table_form" onsubmit="{{handleSubmit}}">
   <div>
     <label for="datetime">Select Date and Time:</label>
     <input type="datetime-local" id="datetime" name="datetime" value={formData.time}>
@@ -23,39 +23,52 @@
   <div>
     <button type="submit">Submit</button>
   </div>
-</form>
+</form> -->
 
 <script>
-  time_table_form.onsubmit = async (e) => {
-    e.preventDefault();
+  const wrapper = document.querySelector('.wrapper');
 
-    alert(time_table_form.datetime.value);
-    const datetimeInput = document.getElementById('datetime');
-  const datetimeValue = datetimeInput.value;
-  console.log(datetimeValue);
-  
-  const datetime = new Date(datetimeValue);
-  const timestamp = datetime.getTime();
-  
-  console.log(timestamp); // Print the timestamp
+  const column = document.createElement('div');
+  column.classList.add('column');
+  column.id = 'time_column';
+  wrapper.appendChild(column);
+  for (let j = 0; j < 25; j++) {
+      const row = document.createElement('div');
+      row.classList.add('time_row');
+      row.id = `Div${j}`;
+      row.textContent = `${j}:00`;
+      column.appendChild(row);
+    }
 
-    // alert(Date.parce(time_table_form.datetime.value));
-  };
+  for (let i = 0; i < 7; i++) {
+    const column = document.createElement('div');
+    column.classList.add('column');
+    column.id = `column${i}`;
+    wrapper.appendChild(column);
+    for (let j = 0; j < 25; j++) {
+      const row = document.createElement('div');
+      row.classList.add('row');
+      row.id = `Div_${i}_${j}`;
+      row.classList.add('cell');
+      row.textContent = j;
+      column.appendChild(row);
+    }
+  }
 </script>
 
 <script>
-    const week = ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-    const table_header = document.getElementById('table_header');
-    for (let i = 0; i < 8; i++) {
-      const div = document.createElement('div');
-      div.textContent = week[i];
-      div.id = `Div${i+1}`;
-        div.classList.add('title');
-        table_header.appendChild(div);
-    }
-  </script>
+  const week = ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  const table_header = document.getElementById('table_header');
+  for (let i = 0; i < 8; i++) {
+    const div = document.createElement('div');
+    div.textContent = week[i];
+    div.id = `Div${i+1}`;
+      div.classList.add('title');
+      table_header.appendChild(div);
+  }
+</script>
 
-  <script>
+  <!-- <script>
     const wrapper = document.querySelector('.wrapper');
     for (let i = 0; i < 8 * 24; i++) {
       const div = document.createElement('div');
@@ -68,7 +81,7 @@
         div.classList.add('cell');
       wrapper.appendChild(div);
     }
-  </script>
+  </script> -->
 
   <!-- <script>
     fetch('http://localhost:8080/')
@@ -103,11 +116,77 @@ xhr.onreadystatechange = function() {
 xhr.send();
   </script> -->
 
-  <script>
-    const hour = document.getElementById('Div63');
+  <!-- <script>
+    const hour = document.getElementById('Div_0_0');
     const occupation = document.createElement('div');
     occupation.classList.add('occupation');
     occupation.textContent = 'Occupied';
     occupation.style.height = '200px';
     hour.appendChild(occupation)
-  </script>
+  </script> -->
+
+<script>
+  console.log(new Date().getTime());
+  const timestamp = new Date().getTime();
+  const min = 40;
+  const to = new Date(new Date().getTime() + min*60000);
+
+  console.log('from ' + new Date());
+  console.log('to ' + to);
+
+  var date = new Date(timestamp);
+
+  var weekDay = date.getDay();
+
+// Hours part from the timestamp
+var hours = date.getHours();
+console.log(hours)
+
+// Minutes part from the timestamp
+var minutes = "0" + date.getMinutes();
+console.log(minutes)
+
+// Seconds part from the timestamp
+var seconds = "0" + date.getSeconds();
+
+// Will display time in 10:30:23 format
+var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+console.log(formattedTime);
+
+
+
+// const hour = document.getElementById(`Div_0_${hours}`);
+//const hour = document.getElementById(`Div_0_0`);
+const wr = document.getElementById('wrapper');
+
+
+const occupation = document.createElement('div');
+occupation.classList.add('occupation');
+occupation.textContent = 'Occupied';
+occupation.style.height = '500px';
+wr.appendChild(occupation)
+
+const element = document.getElementById('wrapper');
+const width = element.offsetWidth;
+const height = element.offsetHeight;
+
+const column_size = width / 8;
+const row_size = height / 25;
+
+
+occupation.style.left = column_size * weekDay + 'px';
+occupation.style.top = row_size * hours + 'px';
+
+const from_min = new Date().getMinutes();
+const to_min = to.getMinutes();
+
+console.log('from and to" ' + from_min, to_min);
+
+console.log(to_min - from_min);
+
+
+
+console.log(`Width: ${width}px, Height: ${height}px`);
+
+</script>
