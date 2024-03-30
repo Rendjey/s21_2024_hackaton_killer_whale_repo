@@ -7,15 +7,46 @@
 </header>
 
 
-<div>
+<div id="table_container">
     <div id="table_header"></div>
 <div class="wrapper"></div>
-</div>
+
+<form id="time_table_form" onsubmit="{{handleSubmit}}">
+  <div>
+    <label for="datetime">Select Date and Time:</label>
+    <input type="datetime-local" id="datetime" name="datetime" value={formData.time}>
+  </div>
+  <div>
+    <label for="duration">Write visit duration:</label>
+    <input type="text" id="duration" name="duration" placeholder="duration in minutes">
+  </div>
+  <div>
+    <button type="submit">Submit</button>
+  </div>
+</form>
 
 <script>
-    const week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  time_table_form.onsubmit = async (e) => {
+    e.preventDefault();
+
+    alert(time_table_form.datetime.value);
+    const datetimeInput = document.getElementById('datetime');
+  const datetimeValue = datetimeInput.value;
+  console.log(datetimeValue);
+  
+  const datetime = new Date(datetimeValue);
+  const timestamp = datetime.getTime();
+  
+  console.log(timestamp); // Print the timestamp
+
+    // alert(Date.parce(time_table_form.datetime.value));
+  };
+</script>
+
+<script>
+    const week = ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     const table_header = document.getElementById('table_header');
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 8; i++) {
       const div = document.createElement('div');
       div.textContent = week[i];
       div.id = `Div${i+1}`;
@@ -26,9 +57,13 @@
 
   <script>
     const wrapper = document.querySelector('.wrapper');
-    for (let i = 0; i < 7 * 24; i++) {
+    for (let i = 0; i < 8 * 24; i++) {
       const div = document.createElement('div');
       div.textContent = `Div ${i+1}`;
+      if (i % 8 === 0) {
+        div.classList.add('table_time');
+        div.textContent = `${i/8}:00`;
+      }
       div.id = `Div${i+1}`;
         div.classList.add('cell');
       wrapper.appendChild(div);

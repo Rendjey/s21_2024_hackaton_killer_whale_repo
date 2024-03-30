@@ -1,6 +1,6 @@
 .wrapper {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(24, 1fr);
     height: 700px;
   }
@@ -25,5 +25,27 @@
 
   #table_header {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(8, 1fr);
+    background-color: green;
   }
+
+  #table_container {
+    margin: auto;
+    max-width: 1000px;
+  }
+
+  .table_time {
+    background-color: yellowgreen;
+    text-align: center;
+    padding-top: 5px;
+  }
+
+  #time_table_form {
+    max-width: 400px;
+  }
+
+#time_table_form label,
+#time_table_form input,
+#time_table_form button {
+  margin: 10px;
+}
