@@ -42,7 +42,6 @@ def registration():
     sql = """SELECT username FROM users WHERE username = %s"""
     record_to_insert = username
     cur.execute(sql, record_to_insert)
-    return "pup"
     pr = cur.fetchall()
     if(int(pr) != 0):
         status = "Имя занято"
