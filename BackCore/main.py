@@ -1,9 +1,6 @@
-import re
-import random
 import psycopg2
 from termcolor import colored
-from flask import Flask, render_template, request
-
+from flask import Flask, request
 
 app = Flask(__name__)
 
@@ -20,4 +17,16 @@ def home():
     pdata = {
         "status": "ok",
     }
+    return pdata
+
+@app.route("/registration/", methods=['POST'])
+def registration():
+    request_data = request.json
+    nickname = request_data['username']
+    pdata = {
+        "status": "ok",
+        "username": str(nickname),
+    }
+    message = colored("nickname", "light_green") + " : " + colored(nickname, "light_blue") + "\n"
+    print(message)
     return pdata
