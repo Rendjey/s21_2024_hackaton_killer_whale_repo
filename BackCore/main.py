@@ -27,7 +27,7 @@ def registration():
     try:
         username = str(request_data['username'])
         uid = str(request_data['uid'])
-        if(base_controller != 7): #S21 DataBase
+        if(base_controller() == True): #S21 DataBase
             role = "student"
         else:
             role = "adm" 
@@ -39,15 +39,19 @@ def registration():
     conn = get_db_connection()
     cur = conn.cursor()
     
-    sql = """SELECT username FROM users WHERE username = %s"""
-    record_to_insert = username
+    sql = "SELECT username FROM users WHERE username = %s"
+    record_to_insert = (username,)
     cur.execute(sql, record_to_insert)
     pr = cur.fetchall()
-    if(int(pr) != 0):
-        status = "Имя занято"
+    
+    if(str(pr) != "[]"):
+        status = {
+            "status": "error",
+            "description": "Имя занято"
+        }
         return status
 
-    sql = """INSERT INTO users (username, uid, role) VALUES (%s, %s, %s)"""
+    sql = "INSERT INTO users (username, uid, role) VALUES (%s, %s, %s)"
     record_to_insert = (username, uid, role)
     cur.execute(sql, record_to_insert)
     conn.commit()
@@ -57,5 +61,36 @@ def registration():
 
     pdata = {"status": "ok"}
 
+    return pdata
 
+@app.route("/login/", methods=['POST'])
+def login():
+    status = 'ok'
+    request_data = request.json
+
+    try:
+        uid = str(request_data['uid'])
+    except KeyError as e:
+        status = 'Unidentified error'
+        pdata = {"status": status}
+        return pdata
+ 
+    conn = get_db_connection()
+    cur = conn.cursor()
+    
+    sql = "SELECT username FROM users WHERE uid = %s"
+    record_to_insert = (uid,)
+    cur.execute(sql, record_to_insert)
+    pr = cur.fetchall()
+    if(str(pr) != "[]"):
+        pdata = {
+            "status": "ok",
+            "username": pr[0][0],
+        }
+    else:
+        pdata = {
+            "status": "error",
+            "description": "Пользователь не найден"
+        }
+        
     return pdata
